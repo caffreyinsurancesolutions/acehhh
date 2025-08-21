@@ -19,7 +19,7 @@
   .pill{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer}
   .pill.active{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent}
   .input{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;gap:8px;background:#fff;margin-left:auto}
-  .input input{width:90px;border:0;outline:0;font:inherit;padding:4px 0}
+  .input input{width:110px;border:0;outline:0;font:inherit;padding:4px 0}
   .grid{display:grid;gap:14px}
   .cards{grid-template-columns:repeat(5,minmax(0,1fr))}
   @media (max-width:1100px){.cards{grid-template-columns:1fr 1fr}}
@@ -38,9 +38,8 @@
   .tab.active{background:#3749ff;color:#fff}
   .panel.hide{display:none}
   .foot{padding:16px;background:#fafafa;text-align:center;color:#6b7280;border-top:1px solid var(--line)}
-  .plink{margin-left:8px;text-decoration:none}
-  .plink:focus,.plink:hover{opacity:.8}
-  .pill .plink{margin-left:0}
+  .plink{margin-left:6px;text-decoration:none}
+  .plink:hover,.plink:focus{opacity:.8}
   @media print{body{background:#fff;padding:0}.wrap{box-shadow:none;border-radius:0}.controls,.tabs{display:none}}
 </style>
 </head>
@@ -62,7 +61,9 @@
       <div class="pill" data-tier="25000">$25k</div>
       <div class="pill active" data-tier="50000">$50k</div>
       <div class="pill" data-tier="100000">$100k</div>
-      <div class="input"><span>Lives</span><input id="lives" type="number" min="1" step="1" value="118"/></div>
+      <div class="input"><span>Lives</span>
+        <input id="lives" type="number" min="1" step="0.25" value="119.75" title="Default set to 119.75 to match Mutual of Omaha projection $598.75/month at 50k."/>
+      </div>
     </div>
     <p class="note">Monthly = (combined per-$1k rate) × (Lives × Benefit ÷ 1,000). UNUM basic life includes AD&amp;D in a single rate; we show a range (life-only to life+0.023) for transparency.</p>
   </div>
@@ -82,10 +83,10 @@
           <tr>
             <th>Line</th>
             <th>Current (UNUM / MetLife dental)</th>
-            <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="Open MetLife proposal" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0">🔗</a></th>
-            <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="Open Mutual of Omaha proposal" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0">🔗</a></th>
-            <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Open Equitable proposal" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0">🔗</a></th>
-            <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Open Principal proposal" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0">🔗</a></th>
+            <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife proposal" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0">🔗</a></th>
+            <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="Mutual of Omaha proposal" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0">🔗</a></th>
+            <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable proposal" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0">🔗</a></th>
+            <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal proposal" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0">🔗</a></th>
           </tr>
         </thead>
         <tbody>
@@ -121,19 +122,19 @@
           <tr>
             <th>Item</th>
             <th>UNUM (current) <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Life+AD&D HS" href="https://www.dropbox.com/scl/fi/yvbb6y30mzj2q2nj889pf/Life-AD-D-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=ey6u7x1crwi5s0yhzvqv3nw9s&dl=0">🔗</a></th>
-            <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Life+AD&D — see p.4 (others pp.2–3,6,8,19)" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
+            <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Life+AD&D — p.4 (others pp.2–3,6,8,19)" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
             <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Life+AD&D — 25k p.3 / 50k p.5 / 100k p.7" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=3">🔗</a></th>
             <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Life per $1k — pp.2/4/6; AD&D pp.3/5/7" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=2">🔗</a></th>
-            <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Life+AD&D — 25k only; summary p.2" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=2">🔗</a></th>
+            <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Life+AD&D — 25k only; p.2" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=2">🔗</a></th>
           </tr>
         </thead>
         <tbody>
           <tr><td>Life rate (per $1,000)</td>
             <td>0.149 (incl. AD&amp;D)</td>
-            <td>0.105</td>
-            <td>0.080 <span class="note">(25/50k)</span> / 0.070 <span class="note">(100k)</span></td>
+            <td>0.105 (25k) / <b>0.090 (50k)</b> / 0.079 (100k)</td>
+            <td>0.080 (25/50k) / 0.070 (100k)</td>
             <td>0.123 (25k) / 0.120 (50k) / 0.114 (100k)</td>
-            <td>0.120 <span class="note">(25k only)</span></td>
+            <td>0.120 (25k only)</td>
           </tr>
           <tr><td>AD&amp;D rate (per $1,000)</td>
             <td><span class="note">included</span></td>
@@ -144,8 +145,8 @@
           </tr>
           <tr><td><b>Combined rate (per $1,000)</b></td>
             <td>&ge;0.149 to ~0.172</td>
-            <td><b>0.119</b></td>
-            <td><b>0.100 (25/50k) / 0.090 (100k)</b></td>
+            <td><b>0.119 (25k)</b> / <b>0.104 (50k)</b> / <b>0.093 (100k)</b></td>
+            <td><b>0.100 (25/50k)</b> / <b>0.090 (100k)</b></td>
             <td><b>0.153 / 0.150 / 0.144</b></td>
             <td><b>0.143 (25k)</b></td>
           </tr>
@@ -166,22 +167,22 @@
   <!-- Vision -->
   <div class="blk panel hide" id="panel-vision">
     <div class="tablewrap">
-      <table class="num" id="visionTable">
+      <table class="num">
         <thead>
           <tr>
             <th>Tier</th>
-            <th>UNUM (EyeMed) <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Vision HS (EyeMed)" href="https://www.dropbox.com/scl/fi/pm8f8x7w59bpj9j57zy95/Vision-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=n5zeatibzz5fl3liwknduscsd&dl=0">🔗</a></th>
-            <th>MetLife (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Vision — see p.4 (tiers); pp.39–41 details" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
-            <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Vision — see p.19 (EyeMed tiers)" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=19">🔗</a></th>
-            <th>Equitable (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Vision — see p.19" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=19">🔗</a></th>
-            <th>Principal (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Vision — see p.4" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=4">🔗</a></th>
+            <th>UNUM (EyeMed) <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Vision HS" href="https://www.dropbox.com/scl/fi/pm8f8x7w59bpj9j57zy95/Vision-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=n5zeatibzz5fl3liwknduscsd&dl=0">🔗</a></th>
+            <th>MetLife (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Vision — p.4 (tiers)" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
+            <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Vision — p.19 (EyeMed tiers)" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=19">🔗</a></th>
+            <th>Equitable (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Vision — p.19" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=19">🔗</a></th>
+            <th>Principal (VSP) <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Vision — p.4" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=4">🔗</a></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Employee Only</td><td>$6.62</td><td>$9.54</td><td>$6.62</td><td>$8.85</td><td>$8.58</td></tr>
-          <tr><td>Employee + Spouse</td><td>$13.23</td><td>$19.51</td><td>$13.23</td><td>$17.69</td><td>$16.52</td></tr>
-          <tr><td>Employee + Child(ren)</td><td>$15.25</td><td>$19.70</td><td>$15.25</td><td>$18.93</td><td>$18.06</td></tr>
-          <tr><td>Family</td><td>$23.66</td><td>$26.38</td><td>$23.66</td><td>$30.26</td><td>$27.91</td></tr>
+          <tr><td>Employee Only</td><td>$6.62</td><td>$9.94</td><td>$6.62</td><td>$8.85</td><td>$8.58</td></tr>
+          <tr><td>Employee + Spouse</td><td>$13.23</td><td>$19.06</td><td>$13.23</td><td>$17.69</td><td>$16.52</td></tr>
+          <tr><td>Employee + Child(ren)</td><td>$15.25</td><td>$21.97</td><td>$15.25</td><td>$18.93</td><td>$18.06</td></tr>
+          <tr><td>Family</td><td>$23.66</td><td>$34.09</td><td>$23.66</td><td>$30.26</td><td>$27.91</td></tr>
         </tbody>
       </table>
     </div>
@@ -197,26 +198,26 @@
             <th>Age band (per $1,000)</th>
             <th>UNUM — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Voluntary Life/AD&D HS" href="https://www.dropbox.com/scl/fi/fj9qn02dhygcfprhuqbzm/Vol-Life-ADD-HS-Ace-Home-Healthcare-Hospice-002.pdf?rlkey=lbpqx10h3j54caszye5seirfc&dl=0">🔗</a></th>
             <th>UNUM — Spouse <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Voluntary Life/AD&D HS" href="https://www.dropbox.com/scl/fi/fj9qn02dhygcfprhuqbzm/Vol-Life-ADD-HS-Ace-Home-Healthcare-Hospice-002.pdf?rlkey=lbpqx10h3j54caszye5seirfc&dl=0">🔗</a></th>
-            <th>MetLife — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary Life — see p.3" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=3">🔗</a></th>
-            <th>MetLife — Spouse* <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary Life — see p.3" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=3">🔗</a></th>
-            <th>MOO — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Voluntary Life — see p.10" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=10">🔗</a></th>
-            <th>Equitable — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Voluntary Life — see p.8" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=8">🔗</a></th>
-            <th>Principal — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Voluntary Life — see p.3" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=3">🔗</a></th>
+            <th>MetLife — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary Life — p.3" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=3">🔗</a></th>
+            <th>MetLife — Spouse* <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary Life — p.3" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=3">🔗</a></th>
+            <th>MOO — Emp (Life+AD&amp;D combined) <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Voluntary Life/AD&D — p.10" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=10">🔗</a></th>
+            <th>Equitable — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Voluntary Life — p.8" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=8">🔗</a></th>
+            <th>Principal — Emp <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal Voluntary Life — p.3" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=3">🔗</a></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>&lt;30</td><td>$0.032</td><td>$0.059</td><td>$0.047</td><td>$0.047</td><td>$0.060</td><td>$0.060</td><td>$0.055</td></tr>
-          <tr><td>30–34</td><td>$0.058</td><td>$0.055</td><td>$0.066</td><td>$0.066</td><td>$0.080</td><td>$0.080</td><td>$0.069</td></tr>
-          <tr><td>35–39</td><td>$0.093</td><td>$0.075</td><td>$0.090</td><td>$0.090</td><td>$0.090</td><td>$0.090</td><td>$0.089</td></tr>
-          <tr><td>40–44</td><td>$0.132</td><td>$0.112</td><td>$0.100</td><td>$0.100</td><td>$0.134</td><td>$0.134</td><td>$0.145</td></tr>
-          <tr><td>45–49</td><td>$0.210</td><td>$0.178</td><td>$0.150</td><td>$0.150</td><td>$0.211</td><td>$0.211</td><td>$0.216</td></tr>
-          <tr><td>50–54</td><td>$0.317</td><td>$0.277</td><td>$0.230</td><td>$0.230</td><td>$0.334</td><td>$0.334</td><td>$0.352</td></tr>
-          <tr><td>55–59</td><td>$0.442</td><td>$0.435</td><td>$0.430</td><td>$0.430</td><td>$0.532</td><td>$0.532</td><td>$0.577</td></tr>
-          <tr><td>60–64</td><td>$0.552</td><td>$0.590</td><td>$0.560</td><td>$0.560</td><td>$0.713</td><td>$0.713</td><td>$0.787</td></tr>
-          <tr><td>65–69</td><td>$0.726</td><td>$0.926</td><td>$0.734</td><td>$0.734</td><td>$1.270</td><td>$1.270</td><td>$1.292</td></tr>
-          <tr><td>70–79</td><td>$1.330</td><td>—</td><td>$1.338</td><td>$1.338</td><td>$2.142 (70–74)</td><td>$2.142 (70–74)</td><td>$2.249 (70+)</td></tr>
-          <tr><td>80+</td><td>$4.467</td><td>—</td><td>—</td><td>—</td><td>$4.569</td><td>$4.569</td><td>—</td></tr>
-          <tr><td class="note" colspan="8">*MetLife shows Dependent Life separately; spouse band mirrored to employee for comparability.</td></tr>
+          <tr><td>&lt;30</td><td>$0.032</td><td>$0.059</td><td>$0.047</td><td>$0.047</td><td>$0.110</td><td>$0.060</td><td>$0.055</td></tr>
+          <tr><td>30–34</td><td>$0.058</td><td>$0.055</td><td>$0.066</td><td>$0.066</td><td>$0.110</td><td>$0.080</td><td>$0.069</td></tr>
+          <tr><td>35–39</td><td>$0.093</td><td>$0.075</td><td>$0.090</td><td>$0.090</td><td>$0.110</td><td>$0.090</td><td>$0.089</td></tr>
+          <tr><td>40–44</td><td>$0.132</td><td>$0.112</td><td>$0.100</td><td>$0.100</td><td>$0.110</td><td>$0.134</td><td>$0.145</td></tr>
+          <tr><td>45–49</td><td>$0.210</td><td>$0.178</td><td>$0.150</td><td>$0.150</td><td>$0.110</td><td>$0.211</td><td>$0.216</td></tr>
+          <tr><td>50–54</td><td>$0.317</td><td>$0.277</td><td>$0.230</td><td>$0.230</td><td>$0.110</td><td>$0.334</td><td>$0.352</td></tr>
+          <tr><td>55–59</td><td>$0.442</td><td>$0.435</td><td>$0.430</td><td>$0.430</td><td>$0.110</td><td>$0.532</td><td>$0.577</td></tr>
+          <tr><td>60–64</td><td>$0.552</td><td>$0.590</td><td>$0.560</td><td>$0.560</td><td>$0.110</td><td>$0.713</td><td>$0.787</td></tr>
+          <tr><td>65–69</td><td>$0.726</td><td>$0.926</td><td>$0.734</td><td>$0.734</td><td>$0.110</td><td>$1.270</td><td>$1.292</td></tr>
+          <tr><td>70–79</td><td>$1.330</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$0.110</td><td>$2.142 (70–74)</td><td>$2.249 (70+)</td></tr>
+          <tr><td>80+</td><td>$4.467</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$0.110</td><td>$4.569</td><td>—</td></tr>
+          <tr><td class="note" colspan="8">*MetLife shows Dependent Life separately; spouse band mirrored to employee for comparability. MOO VL is quoted as a flat Life+AD&amp;D rate of $0.110 per $1,000 across ages.</td></tr>
         </tbody>
       </table>
     </div>
@@ -229,24 +230,28 @@
         <thead><tr>
           <th>Age band</th>
           <th>UNUM <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Voluntary LTD HS" href="https://www.dropbox.com/scl/fi/w74honpyawjo50tfz4quo/Vol-LTD-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=yigv0ep9erqkwg8k4rp4uj09h&dl=0">🔗</a></th>
-          <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary LTD — see p.45" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=45">🔗</a></th>
-          <th>MOO</th>
-          <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Voluntary LTD — see p.14" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=14">🔗</a></th>
+          <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Voluntary LTD — p.45" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=45">🔗</a></th>
+          <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Voluntary LTD — per your screenshot" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0">🔗</a></th>
+          <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Voluntary LTD — p.14" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=14">🔗</a></th>
           <th>Principal</th>
         </tr></thead>
         <tbody>
-          <tr><td>&lt;35</td><td>$0.08 / $0.21 / $0.44</td><td>$0.060</td><td>—</td><td>$0.056 / $0.066 / $0.114</td><td>— not quoted</td></tr>
-          <tr><td>35–39</td><td>$0.76</td><td>$0.570</td><td>—</td><td>$0.219</td><td>—</td></tr>
-          <tr><td>40–44</td><td>$1.23</td><td>$0.923</td><td>—</td><td>$0.318</td><td>—</td></tr>
-          <tr><td>45–49</td><td>$1.62</td><td>$1.215</td><td>—</td><td>$0.440</td><td>—</td></tr>
-          <tr><td>50–54</td><td>$2.01</td><td>$1.508</td><td>—</td><td>$0.611</td><td>—</td></tr>
-          <tr><td>55–59</td><td>$2.32</td><td>$1.740</td><td>—</td><td>$0.670</td><td>—</td></tr>
-          <tr><td>60–64</td><td>$1.93</td><td>$1.448</td><td>—</td><td>$0.598</td><td>—</td></tr>
-          <tr><td>65+</td><td>$1.01 / $0.39</td><td>$0.293</td><td>—</td><td>$0.507</td><td>—</td></tr>
+          <tr><td>&lt;20</td><td>$0.08</td><td>—</td><td>$0.08</td><td>—</td><td>—</td></tr>
+          <tr><td>20–24</td><td>$0.08</td><td>—</td><td>$0.08</td><td>—</td><td>—</td></tr>
+          <tr><td>25–29</td><td>$0.21</td><td>$0.060</td><td>$0.21</td><td>$0.056</td><td>—</td></tr>
+          <tr><td>30–34</td><td>$0.44</td><td>$0.106</td><td>$0.44</td><td>$0.066</td><td>—</td></tr>
+          <tr><td>35–39</td><td>$0.76</td><td>$0.219</td><td>$0.76</td><td>$0.219</td><td>—</td></tr>
+          <tr><td>40–44</td><td>$1.23</td><td>$0.304</td><td>$1.23</td><td>$0.318</td><td>—</td></tr>
+          <tr><td>45–49</td><td>$1.62</td><td>$0.440</td><td>$1.62</td><td>$0.440</td><td>—</td></tr>
+          <tr><td>50–54</td><td>$2.01</td><td>$0.559</td><td>$2.01</td><td>$0.611</td><td>—</td></tr>
+          <tr><td>55–59</td><td>$2.32</td><td>$0.643</td><td>$2.32</td><td>$0.670</td><td>—</td></tr>
+          <tr><td>60–64</td><td>$1.93</td><td>$0.598</td><td>$1.93</td><td>$0.598</td><td>—</td></tr>
+          <tr><td>65–69</td><td>$1.01</td><td>$0.557</td><td>$1.01</td><td>$0.507</td><td>—</td></tr>
+          <tr><td>70–79</td><td>$0.39</td><td>—</td><td>$0.39</td><td>—</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note">MCP = Monthly Covered Payroll. Principal did not quote LTD.</p>
+    <p class="note">All LTD rates are per $100 of Monthly Covered Payroll (MCP). Principal did not quote LTD.</p>
   </div>
 
   <!-- Voluntary AD&D -->
@@ -256,10 +261,10 @@
         <thead><tr>
           <th>Relationship (per $1,000)</th>
           <th>UNUM <a class="plink" target="_blank" rel="noopener noreferrer" title="UNUM Voluntary Life/AD&D HS" href="https://www.dropbox.com/scl/fi/fj9qn02dhygcfprhuqbzm/Vol-Life-ADD-HS-Ace-Home-Healthcare-Hospice-002.pdf?rlkey=lbpqx10h3j54caszye5seirfc&dl=0">🔗</a></th>
-          <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife AD&D reference — see p.4" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
-          <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Voluntary AD&D — see p.10" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=10">🔗</a></th>
-          <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Child AD&D — see p.12" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=12">🔗</a></th>
-          <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal AD&D summary — see p.2" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=2">🔗</a></th>
+          <th>MetLife <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife reference — p.4" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0#page=4">🔗</a></th>
+          <th>MOO <a class="plink" target="_blank" rel="noopener noreferrer" title="MOO Voluntary AD&D — p.10 (stand-alone) • Note: Life+AD&D combined is $0.110 in VL table" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0#page=10">🔗</a></th>
+          <th>Equitable <a class="plink" target="_blank" rel="noopener noreferrer" title="Equitable Child AD&D — p.12" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0#page=12">🔗</a></th>
+          <th>Principal <a class="plink" target="_blank" rel="noopener noreferrer" title="Principal AD&D summary — p.2" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0#page=2">🔗</a></th>
         </tr></thead>
         <tbody>
           <tr><td>Employee</td><td>$0.023</td><td>$0.015</td><td>$0.023</td><td>$0.020</td><td>$0.019</td></tr>
@@ -268,7 +273,7 @@
         </tbody>
       </table>
     </div>
-    <p class="note">MetLife: no explicit child AD&amp;D table in quote; Principal: EE/Sp only.</p>
+    <p class="note">MOO Vol Life is quoted as a combined Life+AD&amp;D ($0.110 per $1,000). Stand-alone AD&amp;D shown above when offered.</p>
   </div>
 
   <!-- Dental (in force) -->
@@ -305,35 +310,22 @@
       <div class="card">
         <h4 style="margin:0 0 6px;color:#3749ff">Carrier proposals — page call-outs</h4>
         <ul class="note" style="margin-left:16px;line-height:1.6">
-          <li>
-            <a target="_blank" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0">MetLife — Group Benefits Proposal (Dec 2025)</a>
-            <div>• Basic Life/AD&amp;D per $1,000: p. <b>4</b> (Life $0.079; AD&amp;D $0.014). Other Life tiers ($0.105/$0.090): pp. <b>2–3, 6, 8, 19</b> • Vol Life: p. <b>3</b> • Vol LTD: p. <b>45</b> • Vision: p. <b>4</b> (benefits pp. <b>39–41</b>)</div>
-          </li>
-          <li>
-            <a target="_blank" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0">Mutual of Omaha — Proposal</a>
-            <div>• Life/AD&amp;D: 25k p. <b>3</b> / 50k p. <b>5</b> / 100k p. <b>7</b> • Vol Life/AD&amp;D: p. <b>10</b> • Vision: p. <b>19</b></div>
-          </li>
-          <li>
-            <a target="_blank" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0">Equitable — Proposal</a>
-            <div>• Life: pp. <b>2/4/6</b>; AD&amp;D: pp. <b>3/5/7</b> • Vol Life: p. <b>8</b> • Dep/Child AD&amp;D: p. <b>12</b> • Vol LTD: p. <b>14</b> • Vision: p. <b>19</b></div>
-          </li>
-          <li>
-            <a target="_blank" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0">Principal — Proposal (Dec 2025)</a>
-            <div>• Life+AD&amp;D: p. <b>2</b> (25k only; AD&amp;D $0.023) • Vol Life: p. <b>3</b> • Vision: p. <b>4</b></div>
-          </li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/jlw5y97mcyj4z5ztin58n/ACE-HOME-HEALTH-CARE-and-HOSPICE-MetLife-Proposal-12-2025.pdf?rlkey=0jynd0nikdz2yowj8q2vqbfmx&dl=0">MetLife — Proposal (Dec 2025)</a> — Life/AD&amp;D p.4; Vol Life p.3; Vol LTD p.45; Vision p.4 (benefits pp.39–41)</li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/k52ew3e6cudfwiu7eytlr/Ace-Home-Health-Care-and-Hospice-MoO-Proposal-small.pdf?rlkey=kxx9860cyvqbi5nhz5cwejbwr&dl=0">Mutual of Omaha — Proposal</a> — Life/AD&amp;D 25k p.3 / 50k p.5 / 100k p.7; Vol Life/AD&amp;D p.10; Vision p.19</li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/m4ohysce27poxaricwrzb/ACE-Home-Health-Care-Hospice-Proposal-1-Equitable.pdf?rlkey=awoluvhngem1hk3omgspbsg7q&dl=0">Equitable — Proposal</a> — Life pp.2/4/6; AD&amp;D pp.3/5/7; Vol Life p.8; Child AD&amp;D p.12; Vol LTD p.14; Vision p.19</li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/gylp9sbfx6agclwo7d6c7/ACE-Home-Health-Care-Hospice-Principal-Proposal-12-2025.pdf?rlkey=lr8edeq910g0sudfl6j7y16oq&dl=0">Principal — Proposal (Dec 2025)</a> — Life+AD&amp;D 25k only p.2; Vol Life p.3; Vision p.4</li>
         </ul>
       </div>
-
       <div class="card">
         <h4 style="margin:0 0 6px;color:#3749ff">In-force &amp; reference docs</h4>
         <ul class="note" style="margin-left:16px;line-height:1.6">
           <li><a target="_blank" href="https://www.dropbox.com/scl/fi/yvbb6y30mzj2q2nj889pf/Life-AD-D-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=ey6u7x1crwi5s0yhzvqv3nw9s&dl=0">UNUM — Life &amp; AD&amp;D Highlight Sheet (current)</a></li>
-          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/fj9qn02dhygcfprhuqbzm/Vol-Life-ADD-HS-Ace-Home-Healthcare-Hospice-002.pdf?rlkey=lbpqx10h3j54caszye5seirfc&dl=0">UNUM — Voluntary Life &amp; AD&amp;D Highlight Sheet (current)</a></li>
-          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/w74honpyawjo50tfz4quo/Vol-LTD-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=yigv0ep9erqkwg8k4rp4uj09h&dl=0">UNUM — Voluntary LTD Highlight Sheet (current)</a></li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/fj9qn02dhygcfprhuqbzm/Vol-Life-ADD-HS-Ace-Home-Healthcare-Hospice-002.pdf?rlkey=lbpqx10h3j54caszye5seirfc&dl=0">UNUM — Voluntary Life &amp; AD&amp;D Highlight Sheet</a></li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/w74honpyawjo50tfz4quo/Vol-LTD-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=yigv0ep9erqkwg8k4rp4uj09h&dl=0">UNUM — Voluntary LTD Highlight Sheet</a></li>
           <li><a target="_blank" href="https://www.dropbox.com/scl/fi/pm8f8x7w59bpj9j57zy95/Vision-HS-Ace-Home-Healthcare-Hospice.pdf?rlkey=n5zeatibzz5fl3liwknduscsd&dl=0">UNUM — Vision Highlight Sheet (EyeMed)</a></li>
-          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/eyuc5ckvfib2md50unjhv/New-for-2023-Metlife-Dental-PPO-Summary-of-Benefits.pdf?rlkey=xkmjuyew1urzgwjgparwslyfv&dl=0">MetLife Dental PPO — Summary of Benefits</a></li>
-          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/iss66tvqlwtya5y7cigo5/New-for-2023-Metlife-Dental-HMO-Summary-of-Benefits.pdf?rlkey=370zo9afc79u64z157xezmo5v&dl=0">MetLife Dental DHMO — Summary of Benefits</a></li>
-          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/vjfr9bh9lsmzf5qtdj8d9/2023-Metlife-Benefit-Summary_Volutary-Dental_Ace-Home-Healthcare-and-Hospice_7316176.pdf?rlkey=oyvxaasa7riog0ovmpoa2f2mz&dl=0">MetLife Voluntary Dental — Benefit Summary</a></li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/eyuc5ckvfib2md50unjhv/New-for-2023-Metlife-Dental-PPO-Summary-of-Benefits.pdf?rlkey=xkmjuyew1urzgwjgparwslyfv&dl=0">MetLife Dental PPO — Summary</a></li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/iss66tvqlwtya5y7cigo5/New-for-2023-Metlife-Dental-HMO-Summary-of-Benefits.pdf?rlkey=370zo9afc79u64z157xezmo5v&dl=0">MetLife Dental DHMO — Summary</a></li>
+          <li><a target="_blank" href="https://www.dropbox.com/scl/fi/vjfr9bh9lsmzf5qtdj8d9/2023-Metlife-Benefit-Summary_Volutary-Dental_Ace-Home-Healthcare-and-Hospice_7316176.pdf?rlkey=oyvxaasa7riog0ovmpoa2f2mz&dl=0">MetLife Voluntary Dental — Summary</a></li>
         </ul>
       </div>
     </div>
@@ -350,10 +342,11 @@ const LIVES=document.getElementById('lives');
 
 const rates={
   UNUM:{ life:0.149, adLow:0.000, adHigh:0.023 },
-  MetLife:{ life:0.105, ad:0.014, guar:'36 mo',
-            vision:{ee:9.54, es:19.51, ec:19.70, fam:26.38} },
+  MetLife:{ life:{25000:0.105,50000:0.090,100000:0.079}, ad:0.014, guar:'36 mo',
+            vision:{ee:9.94, es:19.06, ec:21.97, fam:34.09} },
   MOO:{ life:{25000:0.080,50000:0.080,100000:0.070}, ad:0.020, guar:'24 mo',
-        vision:{ee:6.62, es:13.23, ec:15.25, fam:23.66} },
+        vision:{ee:6.62, es:13.23, ec:15.25, fam:23.66},
+        vllifeFlat:0.110 },
   Equitable:{ life:{25000:0.123,50000:0.120,100000:0.114}, ad:0.030, guar:'24 mo',
               vision:{ee:8.85, es:17.69, ec:18.93, fam:30.26} },
   Principal:{ life:{25000:0.120}, ad:0.023, guar:'24 mo',
@@ -367,11 +360,12 @@ function renderScoreboard(){
   const lives=Math.max(1,+LIVES.value||118);
   const el=document.getElementById('scoreboard'); el.innerHTML='';
   const moo=rates.MOO.life[currentTier]+rates.MOO.ad;
+  const ml =rates.MetLife.life[currentTier]+rates.MetLife.ad;
   const eq =rates.Equitable.life[currentTier]+rates.Equitable.ad;
   const items=[
     {name:'Current UNUM',   monthly:`${fmt(monthly(lives, rates.UNUM.life+rates.UNUM.adLow))}–${fmt(monthly(lives, rates.UNUM.life+rates.UNUM.adHigh))}`, note:'Range: life-only to life+0.023 AD&D'},
-    {name:'MetLife',        monthly:fmt(monthly(lives, rates.MetLife.life+rates.MetLife.ad)), tag:'Recommended', note:rates.MetLife.guar},
-    {name:'Mutual of Omaha',monthly:fmt(monthly(lives, moo)), note:rates.MOO.guar},
+    {name:'MetLife',        monthly:fmt(monthly(lives, ml)), tag:'Recommended', note:rates.MetLife.guar},
+    {name:'Mutual of Omaha',monthly:fmt(monthly(lives, moo)), note:`${rates.MOO.guar}`},
     {name:'Equitable',      monthly:fmt(monthly(lives, eq)), note:rates.Equitable.guar},
     {name:'Principal',      monthly:rates.Principal.life[currentTier]?fmt(monthly(lives, rates.Principal.life[currentTier]+rates.Principal.ad)):null, note:'25k only'}
   ];
@@ -395,7 +389,7 @@ function renderLifeTable(){
   document.getElementById('un-m').textContent=`${fmt(unMin)}–${fmt(unMax)}`;
   document.getElementById('un-a').textContent=`${fmt(unMin*12,0)}–${fmt(unMax*12,0)}`;
 
-  const mlM=monthly(lives, rates.MetLife.life+rates.MetLife.ad);
+  const mlM=monthly(lives, rates.MetLife.life[currentTier]+rates.MetLife.ad);
   const moM=monthly(lives, rates.MOO.life[currentTier]+rates.MOO.ad);
   const eqM=monthly(lives, rates.Equitable.life[currentTier]+rates.Equitable.ad);
   const prM=rates.Principal.life[currentTier]?monthly(lives, rates.Principal.life[currentTier]+rates.Principal.ad):null;
