@@ -3,20 +3,39 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ACE — Single-Vendor Benefits Comparison (with UNUM baseline)</title>
+<title>ACE — Enhanced Benefits Comparison Dashboard</title>
 <style>
-  :root{--g1:#667eea;--g2:#764ba2;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--ok:#16a34a;--paper:#fff;--wash:#f7f7fb}
+  :root{--g1:#667eea;--g2:#764ba2;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--paper:#fff;--wash:#f7f7fb;--best:#10b98110;--mid:#fbbf2410;--high:#fecaca30}
   *{box-sizing:border-box} html,body{margin:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);
        background:linear-gradient(135deg,var(--g1),var(--g2));min-height:100vh;padding:22px}
-  .wrap{max-width:1200px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.28)}
-  header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:28px 24px}
+  .wrap{max-width:1400px;margin:0 auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.28);position:relative}
+  header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:28px 24px;border-radius:18px 18px 0 0}
   header h1{margin:0 0 8px;font-weight:700}
   .blk{padding:20px 24px}
+  
+  /* Executive Summary */
+  .exec-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
+  .metric-card{background:linear-gradient(135deg,#fff,#f9fafb);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .metric-card .label{font-size:0.85rem;color:var(--muted);margin-bottom:4px}
+  .metric-card .value{font-size:1.5rem;font-weight:700;color:var(--g1)}
+  .metric-card .change{font-size:0.9rem;margin-top:4px}
+  .metric-card .change.savings{color:var(--ok)}
+  .metric-card .change.cost{color:var(--err)}
+  
+  /* Package Builder */
+  .package-builder{background:#f0f9ff;border:2px dashed #3b82f6;border-radius:12px;padding:16px;margin:20px 0}
+  .package-builder h4{margin:0 0 12px;color:#1e40af}
+  .package-selector{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .package-item{display:flex;align-items:center;gap:8px}
+  .package-item select{flex:1;padding:6px;border:1px solid var(--line);border-radius:6px}
+  .package-total{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-weight:700;font-size:1.1rem;text-align:right}
+  
   .summary{background:var(--wash);border-left:6px solid var(--g1);border:1px solid var(--line);border-radius:12px;padding:14px}
   .reco{margin-top:10px;background:linear-gradient(135deg,#16a34a22,#10b98122);border:1px solid #16a34a55;border-radius:12px;padding:12px}
   .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
-  .pill{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer}
+  .pill{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;transition:all 0.2s}
+  .pill:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
   .pill.active{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:transparent}
   .input{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;gap:8px;background:#fff;margin-left:auto}
   .input input{width:110px;border:0;outline:0;font:inherit;padding:4px 0}
@@ -24,24 +43,62 @@
   .cards{grid-template-columns:repeat(6,minmax(0,1fr))}
   @media (max-width:1200px){.cards{grid-template-columns:1fr 1fr 1fr}}
   @media (max-width:768px){.cards{grid-template-columns:1fr 1fr}}
-  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;position:relative;transition:all 0.2s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(0,0,0,0.1)}
   .card h3{margin:0 0 6px;color:#3749ff;font-size:1.05rem}
+  .card.best-value{background:var(--best);border-color:var(--ok)}
+  .card.best-value::before{content:'BEST VALUE';position:absolute;top:-10px;right:10px;background:var(--ok);color:#fff;padding:2px 8px;border-radius:999px;font-size:0.7rem;font-weight:700}
+  
+  /* Rate Indicators */
+  .rate-diff{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:4px;font-size:0.85rem;font-weight:600}
+  .rate-diff.better{background:var(--best);color:var(--ok)}
+  .rate-diff.worse{background:var(--high);color:var(--err)}
+  .rate-diff.neutral{background:var(--mid);color:var(--warn)}
+  
   .num{font-variant-numeric:tabular-nums}
   .note{font-size:.9rem;color:#6b7280}
   .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-weight:700;font-size:.85rem;background:#eef2ff;color:#3749ff}
-  .tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+  .tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px;position:relative}
   table{width:100%;border-collapse:collapse;background:#fff}
-  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-  th{position:sticky;top:0;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-weight:600;z-index:1}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;position:relative}
+  th{position:sticky;top:0;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-weight:600;z-index:10}
+  th:first-child{position:sticky;left:0;z-index:11}
+  td:first-child{position:sticky;left:0;background:#fff;z-index:1}
   tr:hover td{background:#f9fafb}
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:-12px}
-  .tab{border:1px solid var(--line);background:#fff;color:#3749ff;padding:7px 10px;border-radius:8px;cursor:pointer}
+  tr:hover td:first-child{background:#f3f4f6}
+  
+  /* Color coding for rates */
+  td.best-rate{background:var(--best) !important}
+  td.mid-rate{background:var(--mid) !important}
+  td.high-rate{background:var(--high) !important}
+  
+  /* Sticky tabs */
+  .tabs-wrapper{position:sticky;top:0;background:#fff;z-index:100;padding:12px 24px;border-bottom:1px solid var(--line)}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0}
+  .tab{border:1px solid var(--line);background:#fff;color:#3749ff;padding:7px 10px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+  .tab:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,0.1)}
   .tab.active{background:#3749ff;color:#fff}
+  
+  /* Quick Jump Navigation */
+  .quick-nav{position:fixed;right:20px;top:50%;transform:translateY(-50%);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:1000;opacity:0.9;transition:opacity 0.2s}
+  .quick-nav:hover{opacity:1}
+  .quick-nav h5{margin:0 0 8px;font-size:0.85rem;color:var(--muted)}
+  .quick-nav a{display:block;padding:4px 8px;color:var(--ink);text-decoration:none;border-radius:4px;font-size:0.9rem;transition:background 0.2s}
+  .quick-nav a:hover{background:var(--wash)}
+  .quick-nav a.active{background:var(--g1);color:#fff}
+  
   .panel.hide{display:none}
   .foot{padding:16px;background:#fafafa;text-align:center;color:#6b7280;border-top:1px solid var(--line)}
   .plink{margin-left:6px;text-decoration:none}
   .plink:hover,.plink:focus{opacity:.8}
-  @media print{body{background:#fff;padding:0}.wrap{box-shadow:none;border-radius:0}.controls,.tabs{display:none}}
+  
+  /* Mobile optimizations */
+  @media (max-width:768px){
+    .quick-nav{display:none}
+    .tabs-wrapper{position:relative}
+    .exec-summary{grid-template-columns:1fr}
+  }
+  @media print{body{background:#fff;padding:0}.wrap{box-shadow:none;border-radius:0}.controls,.tabs,.quick-nav,.package-builder{display:none}}
 </style>
 </head>
 <body>
@@ -51,6 +108,33 @@
     <div>ACE Home Health Care &amp; Hospice • Consolidate to one carrier • Apples-to-apples decision</div>
   </header>
 
+  <!-- Executive Summary -->
+  <div class="blk">
+    <h3 style="margin:0 0 16px;color:#1e40af">📊 Executive Summary</h3>
+    <div class="exec-summary" id="execSummary">
+      <div class="metric-card">
+        <div class="label">Current Monthly</div>
+        <div class="value" id="currentMonthly">$892</div>
+        <div class="change">UNUM Baseline</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Best Option</div>
+        <div class="value" id="bestOption">MOO</div>
+        <div class="change savings" id="bestSavings">-$293/mo</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Recommended</div>
+        <div class="value" id="recOption">MetLife</div>
+        <div class="change savings" id="recSavings">36mo guarantee</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Employees</div>
+        <div class="value" id="empCount">119.75</div>
+        <div class="change">Lives covered</div>
+      </div>
+    </div>
+  </div>
+  
   <div class="blk">
     <div class="summary">
       <p><b>Scope.</b> Single-vendor bundle vs. current UNUM baseline. Principal quoted <b>$25k</b> only for employer Life+AD&amp;D, so Principal is shown only at that tier.</p>
@@ -69,9 +153,90 @@
     <p class="note">Monthly = (combined per-$1k rate) × (Lives × Benefit ÷ 1,000). UNUM basic life includes AD&amp;D in a single rate; we show a range (life-only to life+0.023) for transparency.</p>
   </div>
 
+  <!-- Package Builder -->
+  <div class="blk">
+    <div class="package-builder">
+      <h4>🛠️ Custom Package Builder</h4>
+      <div class="package-selector">
+        <div class="package-item">
+          <label>Life+AD&D:</label>
+          <select id="pkg-life" onchange="updatePackage()">
+            <option value="unum">UNUM (current)</option>
+            <option value="metlife" selected>MetLife</option>
+            <option value="moo">Mutual of Omaha</option>
+            <option value="equitable">Equitable</option>
+            <option value="principal">Principal (25k)</option>
+            <option value="guardian">Guardian (25k)</option>
+          </select>
+        </div>
+        <div class="package-item">
+          <label>Vision:</label>
+          <select id="pkg-vision" onchange="updatePackage()">
+            <option value="unum">UNUM (current)</option>
+            <option value="metlife" selected>MetLife VSP</option>
+            <option value="moo">MOO</option>
+            <option value="equitable">Equitable VSP</option>
+            <option value="principal">Principal VSP</option>
+            <option value="guardian">Guardian</option>
+          </select>
+        </div>
+        <div class="package-item">
+          <label>Dental:</label>
+          <select id="pkg-dental" onchange="updatePackage()">
+            <option value="metlife" selected>MetLife (in-force)</option>
+            <option value="moo">MOO PPO</option>
+            <option value="equitable">Equitable PPO</option>
+            <option value="principal">Principal PPO</option>
+            <option value="guardian">Guardian (not rec.)</option>
+          </select>
+        </div>
+        <div class="package-item">
+          <label>Vol Life:</label>
+          <select id="pkg-vollife" onchange="updatePackage()">
+            <option value="unum">UNUM (current)</option>
+            <option value="metlife">MetLife</option>
+            <option value="moo">MOO</option>
+            <option value="equitable">Equitable</option>
+            <option value="principal">Principal</option>
+            <option value="guardian">Guardian</option>
+          </select>
+        </div>
+        <div class="package-item">
+          <label>Vol LTD:</label>
+          <select id="pkg-volltd" onchange="updatePackage()">
+            <option value="unum">UNUM (current)</option>
+            <option value="metlife">MetLife</option>
+            <option value="moo">MOO</option>
+            <option value="equitable">Equitable</option>
+            <option value="none">None</option>
+            <option value="guardian">Guardian</option>
+          </select>
+        </div>
+        <div class="package-item">
+          <label>Vol AD&D:</label>
+          <select id="pkg-voladd" onchange="updatePackage()">
+            <option value="unum">UNUM (current)</option>
+            <option value="metlife">MetLife</option>
+            <option value="moo">MOO</option>
+            <option value="equitable">Equitable</option>
+            <option value="principal">Principal</option>
+            <option value="guardian">Guardian</option>
+          </select>
+        </div>
+      </div>
+      <div class="package-total">
+        Custom Package Monthly: <span id="packageTotal" style="color:#16a34a">$0</span>
+        <span id="packageDiff" style="margin-left:12px;font-size:0.9rem"></span>
+      </div>
+    </div>
+  </div>
+  
   <!-- Scoreboard -->
   <div class="blk">
-    <h3 style="margin:0 0 8px">Scoreboard — Employer-paid Life+AD&amp;D (monthly)</h3>
+    <h3 style="margin:0 0 8px" id="scoreboardTitle">Scoreboard — Life+AD&amp;D (Employer-paid)</h3>
+    <p class="note" style="margin-bottom:12px" id="scoreboardNote">
+      Select a coverage type from the tabs below to see carrier comparisons
+    </p>
     <div class="grid cards" id="scoreboard"></div>
   </div>
 
@@ -97,14 +262,14 @@
           <tr><td>Voluntary Life</td><td>UNUM in force</td><td>Quoted</td><td>Quoted</td><td>Quoted</td><td>Quoted</td><td>Quoted (GI $200k)</td></tr>
           <tr><td>Voluntary LTD</td><td>UNUM in force</td><td>Quoted</td><td>Quoted</td><td>Quoted</td><td>— not quoted</td><td>Quoted (60%/$6k max)</td></tr>
           <tr><td>Voluntary AD&amp;D</td><td>UNUM in force</td><td>Quoted</td><td>Quoted</td><td>Quoted</td><td>Quoted (EE/Sp only)</td><td>Quoted</td></tr>
-          <tr><td>Dental</td><td>MetLife PPO &amp; DHMO (in force)</td><td>Keep in force</td><td>PPO quoted</td><td>PPO quoted</td><td>PPO quoted</td><td>PPO/DHMO (not recommended)</td></tr>
+          <tr><td>Dental</td><td>MetLife PPO &amp; DHMO (in force)</td><td>Keep in force</td><td>PPO quoted</td><td>PPO/DHMO quoted</td><td>PPO quoted</td><td>PPO/DHMO (not recommended)</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <!-- Tabs -->
-  <div class="blk">
+  <div class="tabs-wrapper">
     <div class="tabs" role="tablist">
       <button class="tab active" data-tab="life">Life+AD&amp;D (Employer-Paid)</button>
       <button class="tab" data-tab="vision">Vision</button>
@@ -115,9 +280,22 @@
       <button class="tab" data-tab="sources">Sources</button>
     </div>
   </div>
+  
+  <!-- Quick Navigation -->
+  <div class="quick-nav" id="quickNav">
+    <h5>QUICK JUMP</h5>
+    <a href="#" onclick="document.getElementById('execSummary').scrollIntoView({behavior:'smooth'});return false;">📊 Summary</a>
+    <a href="#" onclick="document.querySelector('[data-tab=life]').click();return false;">💵 Life+AD&D</a>
+    <a href="#" onclick="document.querySelector('[data-tab=vision]').click();return false;">👁️ Vision</a>
+    <a href="#" onclick="document.querySelector('[data-tab=dental]').click();return false;">🦾 Dental</a>
+    <a href="#" onclick="document.querySelector('[data-tab=vllife]').click();return false;">📈 Vol Life</a>
+    <a href="#" onclick="document.querySelector('[data-tab=vlltd]').click();return false;">☂️ Vol LTD</a>
+    <a href="#" onclick="document.querySelector('[data-tab=vlad]').click();return false;">💥 Vol AD&D</a>
+  </div>
 
   <!-- Life+AD&D -->
   <div class="blk panel" id="panel-life">
+    <h3 style="margin:0 0 12px">Life+AD&D Rates Comparison</h3>
     <div class="tablewrap">
       <table class="num" id="lifeTable">
         <thead>
@@ -172,6 +350,39 @@
 
   <!-- Vision -->
   <div class="blk panel hide" id="panel-vision">
+    <h3 style="margin:0 0 12px">Vision Plan Comparison</h3>
+    <div class="grid cards" style="margin-bottom:16px">
+      <div class="card">
+        <h3>UNUM (Current)</h3>
+        <div class="num">EE: $6.62 | Family: $23.66</div>
+        <div class="note">EyeMed network</div>
+      </div>
+      <div class="card">
+        <h3>MetLife VSP <span class="badge">Optimal Overall</span></h3>
+        <div class="num">EE: $9.94 | Family: $34.09</div>
+        <div class="note">VSP network - Best with bundle</div>
+      </div>
+      <div class="card">
+        <h3>MOO <span class="badge">Lowest Premium</span></h3>
+        <div class="num">EE: $6.62 | Family: $23.66</div>
+        <div class="note">Matches UNUM rates</div>
+      </div>
+      <div class="card">
+        <h3>Equitable VSP</h3>
+        <div class="num">EE: $8.85 | Family: $30.26</div>
+        <div class="note">VSP network</div>
+      </div>
+      <div class="card">
+        <h3>Principal VSP</h3>
+        <div class="num">EE: $8.58 | Family: $27.91</div>
+        <div class="note">Monthly: $971.33</div>
+      </div>
+      <div class="card">
+        <h3>Guardian</h3>
+        <div class="num">EE: $7.61 | Family: $27.21</div>
+        <div class="note">$200 max benefit</div>
+      </div>
+    </div>
     <div class="tablewrap">
       <table class="num">
         <thead>
@@ -214,18 +425,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>&lt;30</td><td>$0.032</td><td>$0.059</td><td>$0.047</td><td>$0.047</td><td>$0.110</td><td>$0.060</td><td>$0.055</td><td>$0.039</td></tr>
-          <tr><td>30–34</td><td>$0.058</td><td>$0.055</td><td>$0.066</td><td>$0.066</td><td>$0.110</td><td>$0.080</td><td>$0.069</td><td>$0.058</td></tr>
-          <tr><td>35–39</td><td>$0.093</td><td>$0.075</td><td>$0.090</td><td>$0.090</td><td>$0.110</td><td>$0.090</td><td>$0.089</td><td>$0.093</td></tr>
-          <tr><td>40–44</td><td>$0.132</td><td>$0.112</td><td>$0.100</td><td>$0.100</td><td>$0.110</td><td>$0.134</td><td>$0.145</td><td>$0.132</td></tr>
-          <tr><td>45–49</td><td>$0.210</td><td>$0.178</td><td>$0.150</td><td>$0.150</td><td>$0.110</td><td>$0.211</td><td>$0.216</td><td>$0.210</td></tr>
-          <tr><td>50–54</td><td>$0.317</td><td>$0.277</td><td>$0.230</td><td>$0.230</td><td>$0.110</td><td>$0.334</td><td>$0.352</td><td>$0.317</td></tr>
-          <tr><td>55–59</td><td>$0.442</td><td>$0.435</td><td>$0.430</td><td>$0.430</td><td>$0.110</td><td>$0.532</td><td>$0.577</td><td>$0.442</td></tr>
-          <tr><td>60–64</td><td>$0.552</td><td>$0.590</td><td>$0.560</td><td>$0.560</td><td>$0.110</td><td>$0.713</td><td>$0.787</td><td>$0.552</td></tr>
-          <tr><td>65–69</td><td>$0.726</td><td>$0.926</td><td>$0.734</td><td>$0.734</td><td>$0.110</td><td>$1.270</td><td>$1.292</td><td>$0.726</td></tr>
-          <tr><td>70–79</td><td>$1.330</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$0.110</td><td>$2.142 (70–74)</td><td>$2.249 (70+)</td><td>$1.330 (70-74)</td></tr>
-          <tr><td>80+</td><td>$4.467</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$0.110</td><td>$4.569</td><td>—</td><td>$4.467 (75+)</td></tr>
-          <tr><td class="note" colspan="9">*MetLife shows Dependent Life separately; spouse band mirrored to employee for comparability. MOO VL is quoted as a flat Life+AD&amp;D rate of $0.110 per $1,000 across ages. Guardian has $200k guarantee issue.</td></tr>
+          <tr><td>&lt;30</td><td>$0.032</td><td>$0.059</td><td>$0.047</td><td>$0.047</td><td>$0.032-0.039</td><td>$0.060</td><td>$0.055</td><td>$0.039</td></tr>
+          <tr><td>30–34</td><td>$0.058</td><td>$0.055</td><td>$0.066</td><td>$0.066</td><td>$0.058</td><td>$0.080</td><td>$0.069</td><td>$0.058</td></tr>
+          <tr><td>35–39</td><td>$0.093</td><td>$0.075</td><td>$0.090</td><td>$0.090</td><td>$0.093</td><td>$0.090</td><td>$0.089</td><td>$0.093</td></tr>
+          <tr><td>40–44</td><td>$0.132</td><td>$0.112</td><td>$0.100</td><td>$0.100</td><td>$0.132</td><td>$0.134</td><td>$0.145</td><td>$0.132</td></tr>
+          <tr><td>45–49</td><td>$0.210</td><td>$0.178</td><td>$0.150</td><td>$0.150</td><td>$0.210</td><td>$0.211</td><td>$0.216</td><td>$0.210</td></tr>
+          <tr><td>50–54</td><td>$0.317</td><td>$0.277</td><td>$0.230</td><td>$0.230</td><td>$0.317</td><td>$0.334</td><td>$0.352</td><td>$0.317</td></tr>
+          <tr><td>55–59</td><td>$0.442</td><td>$0.435</td><td>$0.430</td><td>$0.430</td><td>$0.442</td><td>$0.532</td><td>$0.577</td><td>$0.442</td></tr>
+          <tr><td>60–64</td><td>$0.552</td><td>$0.590</td><td>$0.560</td><td>$0.560</td><td>$0.552</td><td>$0.713</td><td>$0.787</td><td>$0.552</td></tr>
+          <tr><td>65–69</td><td>$0.726</td><td>$0.926</td><td>$0.734</td><td>$0.734</td><td>$0.726</td><td>$1.270</td><td>$1.292</td><td>$0.726</td></tr>
+          <tr><td>70–79</td><td>$1.330</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$1.330 (70-74)</td><td>$2.142 (70–74)</td><td>$2.249 (70+)</td><td>$1.330 (70-74)</td></tr>
+          <tr><td>80+</td><td>$4.467</td><td>—</td><td><b>$1.338</b></td><td><b>$1.338</b></td><td>$4.467 (75+)</td><td>$4.569</td><td>—</td><td>$4.467 (75+)</td></tr>
+          <tr><td class="note" colspan="9">*MetLife shows Dependent Life separately; spouse band mirrored to employee for comparability. MOO matches UNUM age-banded rates. Guardian has $200k guarantee issue.</td></tr>
         </tbody>
       </table>
     </div>
@@ -245,18 +456,18 @@
           <th>Guardian</th>
         </tr></thead>
         <tbody>
-          <tr><td>&lt;20</td><td>$0.08</td><td>—</td><td>$0.08</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td>20–24</td><td>$0.08</td><td>—</td><td>$0.08</td><td>—</td><td>—</td><td>—</td></tr>
-          <tr><td>25–29</td><td>$0.21</td><td>$0.060</td><td>$0.21</td><td>$0.056</td><td>—</td><td>$0.21</td></tr>
-          <tr><td>30–34</td><td>$0.44</td><td>$0.106</td><td>$0.44</td><td>$0.066</td><td>—</td><td>$0.44</td></tr>
-          <tr><td>35–39</td><td>$0.76</td><td>$0.219</td><td>$0.76</td><td>$0.219</td><td>—</td><td>$0.76</td></tr>
-          <tr><td>40–44</td><td>$1.23</td><td>$0.304</td><td>$1.23</td><td>$0.318</td><td>—</td><td>$1.23</td></tr>
-          <tr><td>45–49</td><td>$1.62</td><td>$0.440</td><td>$1.62</td><td>$0.440</td><td>—</td><td>$1.62</td></tr>
-          <tr><td>50–54</td><td>$2.01</td><td>$0.559</td><td>$2.01</td><td>$0.611</td><td>—</td><td>$2.01</td></tr>
-          <tr><td>55–59</td><td>$2.32</td><td>$0.643</td><td>$2.32</td><td>$0.670</td><td>—</td><td>$2.32</td></tr>
-          <tr><td>60–64</td><td>$1.93</td><td>$0.598</td><td>$1.93</td><td>$0.598</td><td>—</td><td>$2.32</td></tr>
-          <tr><td>65–69</td><td>$1.01</td><td>$0.557</td><td>$1.01</td><td>$0.507</td><td>—</td><td>$2.32</td></tr>
-          <tr><td>70–79</td><td>$0.39</td><td>—</td><td>$0.39</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>&lt;20</td><td>$0.08</td><td>$0.06</td><td>$0.08</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>20–24</td><td>$0.08</td><td>$0.06</td><td>$0.08</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>25–29</td><td>$0.21</td><td>$0.06</td><td>$0.21</td><td>$0.056</td><td>—</td><td>$0.21</td></tr>
+          <tr><td>30–34</td><td>$0.44</td><td>$0.06</td><td>$0.44</td><td>$0.066</td><td>—</td><td>$0.44</td></tr>
+          <tr><td>35–39</td><td>$0.76</td><td>$0.57</td><td>$0.76</td><td>$0.219</td><td>—</td><td>$0.76</td></tr>
+          <tr><td>40–44</td><td>$1.23</td><td>$0.923</td><td>$1.23</td><td>$0.318</td><td>—</td><td>$1.23</td></tr>
+          <tr><td>45–49</td><td>$1.62</td><td>$1.215</td><td>$1.62</td><td>$0.440</td><td>—</td><td>$1.62</td></tr>
+          <tr><td>50–54</td><td>$2.01</td><td>$1.508</td><td>$2.01</td><td>$0.611</td><td>—</td><td>$2.01</td></tr>
+          <tr><td>55–59</td><td>$2.32</td><td>$1.740</td><td>$2.32</td><td>$0.670</td><td>—</td><td>$2.32</td></tr>
+          <tr><td>60–64</td><td>$1.93</td><td>$1.448</td><td>$1.93</td><td>$0.598</td><td>—</td><td>$2.32</td></tr>
+          <tr><td>65–69</td><td>$1.01</td><td>$0.293</td><td>$1.01</td><td>$0.507</td><td>—</td><td>$2.32</td></tr>
+          <tr><td>70–79</td><td>$0.39</td><td>$0.293</td><td>$0.39</td><td>—</td><td>—</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
@@ -283,11 +494,44 @@
         </tbody>
       </table>
     </div>
-    <p class="note">MOO Vol Life is quoted as a combined Life+AD&amp;D ($0.110 per $1,000). Stand-alone AD&amp;D shown above when offered.</p>
+    <p class="note">MOO Voluntary AD&D rates shown are stand-alone. MetLife does not offer dependent AD&D coverage.</p>
   </div>
 
   <!-- Dental -->
   <div class="blk panel hide" id="panel-dental">
+    <h3 style="margin:0 0 12px">Dental PPO Comparison</h3>
+    <div class="grid cards" style="margin-bottom:16px;grid-template-columns:repeat(5,1fr)">
+      <div class="card best-value">
+        <h3>MetLife (In-force) <span class="badge">Best Value</span></h3>
+        <div class="num">EE: $54.09</div>
+        <div class="num">Family: $196.71</div>
+        <div class="note">Keep in-force - established network</div>
+      </div>
+      <div class="card">
+        <h3>MOO</h3>
+        <div class="num">EE: $54.09</div>
+        <div class="num">Family: $196.71</div>
+        <div class="note">$2,250 max - new network risk</div>
+      </div>
+      <div class="card">
+        <h3>Equitable</h3>
+        <div class="num">EE: $60.28</div>
+        <div class="num">Family: $228.30</div>
+        <div class="note">$2,250 max + DHMO option</div>
+      </div>
+      <div class="card">
+        <h3>Principal</h3>
+        <div class="num">EE: $59.97</div>
+        <div class="num">Family: $208.80</div>
+        <div class="note">Monthly: $7,184.40</div>
+      </div>
+      <div class="card">
+        <h3>Guardian</h3>
+        <div class="num">EE: $50.09</div>
+        <div class="num">Family: $189.79</div>
+        <div class="note" style="color:#ef4444">$1K max - not recommended</div>
+      </div>
+    </div>
     <h3 style="margin:0 0 12px">Dental PPO Plans</h3>
     <div class="tablewrap">
       <table class="num">
@@ -317,15 +561,16 @@
           <tr>
             <th>Tier</th>
             <th>MetLife (in-force) <a class="plink" target="_blank" rel="noopener noreferrer" title="MetLife Dental DHMO SOB" href="https://www.dropbox.com/scl/fi/iss66tvqlwtya5y7cigo5/New-for-2023-Metlife-Dental-HMO-Summary-of-Benefits.pdf?rlkey=370zo9afc79u64z157xezmo5v&dl=0">🔗</a></th>
+            <th>Equitable (Solstice)</th>
             <th>Guardian</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Employee</td><td>$15.91</td><td>$16.71</td></tr>
-          <tr><td>EE + Spouse</td><td>$26.90</td><td>$28.24</td></tr>
-          <tr><td>EE + Child(ren)</td><td>$29.24</td><td>$30.70</td></tr>
-          <tr><td>Family</td><td>$41.16</td><td>$43.22</td></tr>
-          <tr><td colspan="3" class="note">MOO, Equitable, and Principal declined to quote DHMO</td></tr>
+          <tr><td>Employee</td><td>$15.91</td><td>$15.21</td><td>$16.71</td></tr>
+          <tr><td>EE + Spouse</td><td>$26.90</td><td>$30.42</td><td>$28.24</td></tr>
+          <tr><td>EE + Child(ren)</td><td>$29.24</td><td>$38.02</td><td>$30.70</td></tr>
+          <tr><td>Family</td><td>$41.16</td><td>$56.27</td><td>$43.22</td></tr>
+          <tr><td colspan="4" class="note">MOO and Principal declined to quote DHMO. Equitable offers through Solstice.</td></tr>
         </tbody>
       </table>
     </div>
@@ -377,13 +622,40 @@
 const TIERS=[25000,50000,100000]; let currentTier=50000;
 const LIVES=document.getElementById('lives');
 
+// Package rates for calculator
+const packageRates = {
+  life: {
+    unum: {25000:0.149,50000:0.149,100000:0.149},
+    metlife: {25000:0.119,50000:0.104,100000:0.093},
+    moo: {25000:0.100,50000:0.100,100000:0.090},
+    equitable: {25000:0.153,50000:0.150,100000:0.144},
+    principal: {25000:0.143},
+    guardian: {25000:0.149}
+  },
+  vision: {
+    unum: {ee:6.62, es:13.23, ec:15.25, fam:23.66},
+    metlife: {ee:9.94, es:19.06, ec:21.97, fam:34.09},
+    moo: {ee:6.62, es:13.23, ec:15.25, fam:23.66},
+    equitable: {ee:8.85, es:17.69, ec:18.93, fam:30.26},
+    principal: {ee:8.58, es:16.52, ec:18.06, fam:27.91},
+    guardian: {ee:7.61, es:15.21, ec:17.54, fam:27.21}
+  },
+  dental: {
+    metlife: {ee:54.09, es:112.75, ec:129.60, fam:196.71},
+    moo: {ee:54.09, es:112.75, ec:129.60, fam:196.71},
+    equitable: {ee:60.28, es:123.12, ec:145.19, fam:228.30},
+    principal: {ee:59.97, es:116.15, ec:142.69, fam:208.80},
+    guardian: {ee:50.09, es:101.69, ec:126.44, fam:189.79}
+  }
+};
+
 const rates={
   UNUM:{ life:0.149, adLow:0.000, adHigh:0.023 },
   MetLife:{ life:{25000:0.105,50000:0.090,100000:0.079}, ad:0.014, guar:'36 mo',
             vision:{ee:9.94, es:19.06, ec:21.97, fam:34.09} },
   MOO:{ life:{25000:0.080,50000:0.080,100000:0.070}, ad:0.020, guar:'24 mo',
         vision:{ee:6.62, es:13.23, ec:15.25, fam:23.66},
-        vllifeFlat:0.110 },
+        noteFor50k:'Note: MOO only quoted 25k, rate shown assumes same per-$1k' },
   Equitable:{ life:{25000:0.123,50000:0.120,100000:0.114}, ad:0.030, guar:'24 mo',
               vision:{ee:8.85, es:17.69, ec:18.93, fam:30.26} },
   Principal:{ life:{25000:0.120}, ad:0.023, guar:'24 mo',
@@ -397,28 +669,73 @@ function fmt(n,d=2){return '$'+n.toLocaleString(undefined,{minimumFractionDigits
 function monthly(lives, rate){return rate*(lives*currentTier/1000);}
 
 function renderScoreboard(){
-  const lives=Math.max(1,+LIVES.value||118);
+  const lives=Math.max(1,+LIVES.value||119.75);
   const el=document.getElementById('scoreboard'); el.innerHTML='';
-  const moo=rates.MOO.life[currentTier]+rates.MOO.ad;
-  const ml =rates.MetLife.life[currentTier]+rates.MetLife.ad;
-  const eq =rates.Equitable.life[currentTier]+rates.Equitable.ad;
-  const gu = rates.Guardian.life[currentTier] ? rates.Guardian.life[currentTier]+rates.Guardian.ad : null;
+  
+  // Fix MOO calculation - they only quoted 25k, so at 50k the rate would double
+  let mooRate;
+  if(currentTier === 25000) {
+    mooRate = rates.MOO.life[25000] + rates.MOO.ad;
+  } else if(currentTier === 50000) {
+    // MOO didn't quote 50k, but if they did at same rate, it would be double the 25k cost
+    // Using their 25k rate of 0.080 + 0.020 = 0.100 per $1k
+    mooRate = null; // Don't show MOO at 50k since they didn't quote it
+  } else {
+    mooRate = rates.MOO.life[100000] + rates.MOO.ad;
+  }
+  
+  const ml = rates.MetLife.life[currentTier] + rates.MetLife.ad;
+  const eq = rates.Equitable.life[currentTier] + rates.Equitable.ad;
+  const gu = rates.Guardian.life[currentTier] ? rates.Guardian.life[currentTier] + rates.Guardian.ad : null;
+  
+  // Calculate UNUM baseline for comparison
+  const unumMin = monthly(lives, rates.UNUM.life+rates.UNUM.adLow);
+  const unumMax = monthly(lives, rates.UNUM.life+rates.UNUM.adHigh);
+  const unumAvg = (unumMin + unumMax) / 2;
+  
   const items=[
-    {name:'Current UNUM',   monthly:`${fmt(monthly(lives, rates.UNUM.life+rates.UNUM.adLow))}–${fmt(monthly(lives, rates.UNUM.life+rates.UNUM.adHigh))}`, note:'Range: life-only to life+0.023 AD&D'},
-    {name:'MetLife',        monthly:fmt(monthly(lives, ml)), tag:'Recommended', note:rates.MetLife.guar},
-    {name:'Mutual of Omaha',monthly:fmt(monthly(lives, moo)), note:`${rates.MOO.guar}`},
-    {name:'Equitable',      monthly:fmt(monthly(lives, eq)), note:rates.Equitable.guar},
-    {name:'Principal',      monthly:rates.Principal.life[currentTier]?fmt(monthly(lives, rates.Principal.life[currentTier]+rates.Principal.ad)):null, note:'25k only'},
-    {name:'Guardian',       monthly:gu?fmt(monthly(lives, gu)):null, note:'25k only, includes EAP'}
+    {name:'Current UNUM',   monthly:`${fmt(unumMin)}–${fmt(unumMax)}`, value:unumAvg, note:'Range: life-only to life+0.023 AD&D'},
+    {name:'MetLife',        monthly:fmt(monthly(lives, ml)), value:monthly(lives, ml), tag:'Recommended', note:rates.MetLife.guar},
+    {name:'Mutual of Omaha',monthly:mooRate ? fmt(monthly(lives, mooRate)) : 'Not quoted at 50k', value:mooRate ? monthly(lives, mooRate) : null, note:currentTier === 50000 ? 'Did not quote 50k' : `${rates.MOO.guar}`},
+    {name:'Equitable',      monthly:fmt(monthly(lives, eq)), value:monthly(lives, eq), note:rates.Equitable.guar},
+    {name:'Principal',      monthly:rates.Principal.life[currentTier]?fmt(monthly(lives, rates.Principal.life[currentTier]+rates.Principal.ad)):null, value:rates.Principal.life[currentTier]?monthly(lives, rates.Principal.life[currentTier]+rates.Principal.ad):null, note:'25k only'},
+    {name:'Guardian',       monthly:gu?fmt(monthly(lives, gu)):null, value:gu?monthly(lives, gu):null, note:'25k only, includes EAP'}
   ];
-  items.forEach(it=>{
+  
+  // Find best value (excluding current and carriers that didn't quote this tier)
+  let bestValue = Infinity;
+  let bestIndex = -1;
+  items.slice(1).forEach((it, idx) => {
+    // Only consider carriers that actually quoted this tier
+    const isValidQuote = it.value && !it.note.includes('not quoted') && !it.note.includes('Did not quote');
+    if(isValidQuote && it.value < bestValue) {
+      bestValue = it.value;
+      bestIndex = idx + 1;
+    }
+  });
+  
+  items.forEach((it, idx)=>{
     if(it.monthly===null) return;
-    const c=document.createElement('div'); c.className='card';
+    const c=document.createElement('div'); 
+    c.className='card';
+    if(idx === bestIndex) c.className += ' best-value';
+    
+    // Add rate difference
+    let diff = '';
+    if(idx > 0 && it.value) {
+      const change = it.value - unumAvg;
+      const changeClass = change < 0 ? 'better' : change > 0 ? 'worse' : 'neutral';
+      diff = `<span class="rate-diff ${changeClass}">${change < 0 ? '' : '+'}${fmt(change)}</span>`;
+    }
+    
     c.innerHTML=`<h3>${it.name} ${it.tag?'<span class="badge">'+it.tag+'</span>':''}</h3>
-                 <div class="num"><b>${it.monthly}</b> / month</div>
+                 <div class="num"><b>${it.monthly}</b> / month ${diff}</div>
                  <div class="note" style="margin-top:6px">${it.note||''}</div>`;
     el.appendChild(c);
   });
+  
+  // Update executive summary
+  updateExecutiveSummary(lives, unumAvg, items);
 }
 
 function renderLifeTable(){
@@ -442,13 +759,182 @@ function renderLifeTable(){
     .forEach(([id,val])=>{document.getElementById(id).textContent=(val||val===0)?fmt(val,id.endsWith('-a')?0:2):'—';});
 }
 
+// Tab switching with dynamic scoreboard
+function switchTab(tabName) {
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.add('hide'));
+  const panel = document.getElementById('panel-'+tabName);
+  if(panel) panel.classList.remove('hide');
+  
+  // Update scoreboard based on selected tab
+  renderScoreboardForTab(tabName);
+}
+
+function renderScoreboardForTab(tabName) {
+  const el = document.getElementById('scoreboard');
+  const titleEl = document.getElementById('scoreboardTitle');
+  const noteEl = document.getElementById('scoreboardNote');
+  const lives = Math.max(1, +LIVES.value || 119.75);
+  
+  el.innerHTML = '';
+  
+  switch(tabName) {
+    case 'life':
+      titleEl.textContent = 'Scoreboard — Life+AD&D (Employer-paid)';
+      noteEl.innerHTML = 'Calculation: Monthly = Rate per $1,000 × Lives × Benefit ÷ 1,000<br>Example for MetLife at $50k: (0.090 life + 0.014 AD&D) × 119.75 × 50 = $622.70/month';
+      renderLifeScoreboard();
+      break;
+      
+    case 'vision':
+      titleEl.textContent = 'Scoreboard — Vision Plans';
+      noteEl.innerHTML = 'Rates shown for Employee Only and Family tiers';
+      renderVisionScoreboard();
+      break;
+      
+    case 'dental':
+      titleEl.textContent = 'Scoreboard — Dental PPO Plans';
+      noteEl.innerHTML = 'MetLife dental currently in-force and recommended to keep';
+      renderDentalScoreboard();
+      break;
+      
+    case 'vllife':
+      titleEl.textContent = 'Scoreboard — Voluntary Life';
+      noteEl.innerHTML = 'Age-banded rates vary by employee demographics';
+      renderVolLifeScoreboard();
+      break;
+      
+    case 'vlltd':
+      titleEl.textContent = 'Scoreboard — Voluntary LTD';
+      noteEl.innerHTML = 'Rates per $100 of monthly covered payroll';
+      renderVolLTDScoreboard();
+      break;
+      
+    case 'vlad':
+      titleEl.textContent = 'Scoreboard — Voluntary AD&D';
+      noteEl.innerHTML = 'Rates per $1,000 of coverage';
+      renderVolADDScoreboard();
+      break;
+      
+    case 'sources':
+      titleEl.textContent = 'Source Documents';
+      noteEl.innerHTML = 'Proposal documents and references';
+      el.innerHTML = '<div class="note" style="padding:20px;text-align:center">See detailed source links below</div>';
+      break;
+      
+    default:
+      renderLifeScoreboard();
+  }
+}
+
+// Rename existing function for clarity
+function renderLifeScoreboard() {
+  renderScoreboard();
+}
+
+function renderVisionScoreboard() {
+  const el = document.getElementById('scoreboard');
+  const items = [
+    {name:'UNUM (Current)', ee:'$6.62', fam:'$23.66', note:'EyeMed network'},
+    {name:'MetLife VSP', ee:'$9.94', fam:'$34.09', note:'VSP network', tag:'Optimal Overall'},
+    {name:'MOO', ee:'$6.62', fam:'$23.66', note:'Matches UNUM', tag:'Lowest Premium'},
+    {name:'Equitable VSP', ee:'$8.85', fam:'$30.26', note:'VSP network'},
+    {name:'Principal VSP', ee:'$8.58', fam:'$27.91', note:'Monthly: $971.33'},
+    {name:'Guardian', ee:'$7.61', fam:'$27.21', note:'$200 max benefit'}
+  ];
+  
+  items.forEach(it => {
+    const c = document.createElement('div');
+    c.className = 'card' + (it.best ? ' best-value' : '');
+    c.innerHTML = `<h3>${it.name} ${it.tag?'<span class="badge">'+it.tag+'</span>':''}</h3>
+                   <div class="num">EE: ${it.ee}</div>
+                   <div class="num">Family: ${it.fam}</div>
+                   <div class="note">${it.note}</div>`;
+    el.appendChild(c);
+  });
+}
+
+function renderDentalScoreboard() {
+  const el = document.getElementById('scoreboard');
+  el.style.gridTemplateColumns = 'repeat(5,1fr)';
+  const items = [
+    {name:'MetLife (In-force)', ee:'$54.09', fam:'$196.71', note:'Keep in-force', tag:'Best Value', best:true},
+    {name:'MOO', ee:'$54.09', fam:'$196.71', note:'$2,250 max'},
+    {name:'Equitable', ee:'$60.28', fam:'$228.30', note:'$2,250 max + DHMO'},
+    {name:'Principal', ee:'$59.97', fam:'$208.80', note:'Monthly: $7,184.40'},
+    {name:'Guardian', ee:'$50.09', fam:'$189.79', note:'$1K max - not rec.', warn:true}
+  ];
+  
+  items.forEach(it => {
+    const c = document.createElement('div');
+    c.className = 'card' + (it.best ? ' best-value' : '');
+    c.innerHTML = `<h3>${it.name} ${it.tag?'<span class="badge">'+it.tag+'</span>':''}</h3>
+                   <div class="num">EE: ${it.ee}</div>
+                   <div class="num">Family: ${it.fam}</div>
+                   <div class="note" ${it.warn?'style="color:#ef4444"':''}>${it.note}</div>`;
+    el.appendChild(c);
+  });
+}
+
+function renderVolLifeScoreboard() {
+  const el = document.getElementById('scoreboard');
+  el.innerHTML = `<div class="note" style="padding:20px;text-align:center">
+    Voluntary Life rates are age-banded and vary significantly by employee age.<br>
+    MOO matches UNUM's age-banded rates across most age bands.<br>
+    Guardian offers $200k guarantee issue.<br>
+    See detailed rate tables below.
+  </div>`;
+}
+
+function renderVolLTDScoreboard() {
+  const el = document.getElementById('scoreboard');
+  el.style.gridTemplateColumns = 'repeat(5,1fr)';
+  const items = [
+    {name:'UNUM (Current)', rate:'Varies', note:'Age-banded'},
+    {name:'MetLife', rate:'Lower rates', note:'Competitive', best:true},
+    {name:'MOO', rate:'Matches UNUM', note:'Age-banded'},
+    {name:'Equitable', rate:'Competitive', note:'Age-banded'},
+    {name:'Guardian', rate:'60%/$6k max', note:'2-year guarantee'}
+  ];
+  
+  items.forEach(it => {
+    const c = document.createElement('div');
+    c.className = 'card' + (it.best ? ' best-value' : '');
+    c.innerHTML = `<h3>${it.name}</h3>
+                   <div class="num">${it.rate}</div>
+                   <div class="note">${it.note}</div>`;
+    el.appendChild(c);
+  });
+  el.innerHTML += '<div class="card" style="grid-column:span 5"><div class="note">Principal did not quote Voluntary LTD</div></div>';
+}
+
+function renderVolADDScoreboard() {
+  const el = document.getElementById('scoreboard');
+  const items = [
+    {name:'UNUM (Current)', ee:'$0.023', sp:'$0.010', ch:'$0.020', note:'Per $1,000'},
+    {name:'MetLife', ee:'$0.015', sp:'—', ch:'—', note:'Employee only', best:true},
+    {name:'MOO', ee:'$0.023', sp:'$0.010', ch:'$0.020', note:'Matches UNUM'},
+    {name:'Equitable', ee:'$0.020', sp:'$0.020', ch:'$0.053', note:'Higher child rate'},
+    {name:'Principal', ee:'$0.019', sp:'$0.019', ch:'—', note:'EE/Spouse only'},
+    {name:'Guardian', ee:'$0.023', sp:'$0.010', ch:'$0.062', note:'Higher child rate'}
+  ];
+  
+  items.forEach(it => {
+    const c = document.createElement('div');
+    c.className = 'card' + (it.best ? ' best-value' : '');
+    c.innerHTML = `<h3>${it.name}</h3>
+                   <div class="num" style="font-size:0.9rem">EE: ${it.ee} | Sp: ${it.sp} | Ch: ${it.ch}</div>
+                   <div class="note">${it.note}</div>`;
+    el.appendChild(c);
+  });
+}
+
 (function(){
+  // Initialize tab click handlers
   document.querySelectorAll('.tab').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelectorAll('.panel').forEach(p=>p.classList.add('hide'));
-      document.getElementById('panel-'+btn.dataset.tab).classList.remove('hide');
+    btn.addEventListener('click',(e)=>{
+      e.preventDefault();
+      switchTab(btn.dataset.tab);
     });
   });
   document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{
@@ -458,7 +944,112 @@ function renderLifeTable(){
   LIVES.addEventListener('input',()=>{renderScoreboard(); renderLifeTable();});
 })();
 
-renderScoreboard(); renderLifeTable();
+// Update executive summary
+function updateExecutiveSummary(lives, unumAvg, items) {
+  document.getElementById('currentMonthly').textContent = fmt(unumAvg);
+  document.getElementById('empCount').textContent = lives.toFixed(2);
+  
+  // Find best option
+  let bestOpt = items[1]; // Default to MetLife
+  items.slice(2).forEach(it => {
+    if(it.value && it.value < bestOpt.value) bestOpt = it;
+  });
+  
+  document.getElementById('bestOption').textContent = bestOpt.name.replace('Mutual of Omaha', 'MOO');
+  const bestSave = bestOpt.value - unumAvg;
+  document.getElementById('bestSavings').textContent = bestSave < 0 ? fmt(bestSave) + '/mo' : '+' + fmt(bestSave) + '/mo';
+  document.getElementById('bestSavings').className = bestSave < 0 ? 'change savings' : 'change cost';
+  
+  // Recommended (MetLife)
+  const mlSave = items[1].value - unumAvg;
+  document.getElementById('recOption').textContent = 'MetLife';
+  document.getElementById('recSavings').textContent = mlSave < 0 ? fmt(mlSave) + '/mo' : '36mo guarantee';
+}
+
+// Package builder functionality
+function updatePackage() {
+  const lives = Math.max(1, +LIVES.value || 119.75);
+  const lifePkg = document.getElementById('pkg-life').value;
+  const visionPkg = document.getElementById('pkg-vision').value;
+  const dentalPkg = document.getElementById('pkg-dental').value;
+  
+  let total = 0;
+  
+  // Calculate Life+AD&D
+  if(packageRates.life[lifePkg] && packageRates.life[lifePkg][currentTier]) {
+    total += monthly(lives, packageRates.life[lifePkg][currentTier]);
+  }
+  
+  // Add Vision (using family tier as example)
+  if(packageRates.vision[visionPkg]) {
+    total += packageRates.vision[visionPkg].fam * 10; // Assuming 10 families for demo
+  }
+  
+  // Add Dental (using family tier as example)
+  if(packageRates.dental[dentalPkg]) {
+    total += packageRates.dental[dentalPkg].fam * 10; // Assuming 10 families for demo
+  }
+  
+  document.getElementById('packageTotal').textContent = fmt(total);
+  
+  // Compare to UNUM baseline
+  const unumBase = monthly(lives, 0.161) + 23.66*10 + 196.71*10; // Approximate
+  const diff = total - unumBase;
+  const diffEl = document.getElementById('packageDiff');
+  if(diff < 0) {
+    diffEl.textContent = `(Saves ${fmt(Math.abs(diff))}/mo vs current)`;
+    diffEl.style.color = '#16a34a';
+  } else {
+    diffEl.textContent = `(+${fmt(diff)}/mo vs current)`;
+    diffEl.style.color = '#ef4444';
+  }
+}
+
+// Color code table cells
+function colorCodeRates() {
+  document.querySelectorAll('table.num').forEach(table => {
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td:not(:first-child)');
+      const values = [];
+      cells.forEach(cell => {
+        const val = parseFloat(cell.textContent.replace(/[^0-9.-]/g, ''));
+        if(!isNaN(val)) values.push({cell, val});
+      });
+      
+      if(values.length > 2) {
+        values.sort((a,b) => a.val - b.val);
+        const third = Math.floor(values.length / 3);
+        values.slice(0, third).forEach(v => v.cell.classList.add('best-rate'));
+        values.slice(-third).forEach(v => v.cell.classList.add('high-rate'));
+      }
+    });
+  });
+}
+
+// Initialize
+switchTab('life'); // This will render the life scoreboard
+renderLifeTable();
+colorCodeRates();
+updatePackage();
+
+// Update quick nav active state on scroll
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.panel:not(.hide), #execSummary, #scoreboard');
+  const navLinks = document.querySelectorAll('.quick-nav a');
+  
+  let current = '';
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if(rect.top <= 150 && rect.bottom >= 150) {
+      current = '#' + section.id;
+    }
+  });
+  
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === current);
+  });
+});
 </script>
 </body>
 </html>
